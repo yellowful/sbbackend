@@ -13,34 +13,13 @@ var db = require('knex')({
   });
 
 const app = express();
-let database={
-    users:[
-        {
-            id:123,
-            name:'Taylor',
-            email:'taylor@gmail.com',
-            password:'1111',
-            entries:0,
-            joined: new Date()
-        },
-        {
-            id:124,
-            name:'Katy',
-            email:'katy@gmail.com',
-            password:'2222',
-            entries:0,
-            joined: new Date()
-        }
-    ]
-}
-    
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use(cors());
 
 app.get('/',(req,res)=>{
-    res.send(database.users)
+    res.send('connected success')
 })
 
 app.post('/signin',(req,res)=>{  
@@ -96,22 +75,14 @@ app.post('/register',(req,res)=>{
     }
 })
 
-app.get('/profile/:id',(req,res)=>{
-    let i=0;
-    let isValidUser = database.users.some(item=>{
-        i++;
-        return item.id===Number(req.params.id);
-    })
-        
-    if(isValidUser){
-        const currentUser = {
-            name:database.users[i-1].name,
-            email:database.users[i-1].email
-        }
+app.get('/profile/:id',(req,res)=>{   
+    db.select()
+    .from('users')
+    .where({id:req.params.id})
+    .then(currentUser => {
         res.json(currentUser);
-    } else {
-        res.status(400).send('not found');
-    }
+    })
+    .catch(err=>res.status(404).json('not found'))    
 })
 
 app.put('/image',(req,res)=>{
