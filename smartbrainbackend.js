@@ -1,6 +1,11 @@
 const express = require('express');
-var cors = require('cors');
-const bcrypt = require('bcrypt-nodejs')
+const cors = require('cors');
+const bcrypt = require('bcrypt-nodejs');
+const register = require('./controllers/register')
+const signin = require('./controllers/signin');
+const profile = require('./controllers/profile');
+const image = require('./controllers/image');
+const Clarifai = require('clarifai');
 
 var db = require('knex')({
     client: 'pg',
@@ -12,90 +17,38 @@ var db = require('knex')({
     }
   });
 
+const apiClarifai = new Clarifai.App({
+apiKey: 'a40220c771334acaafb67dd020f7f9d0'
+});
+
 const app = express();
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use(cors());
 
-app.get('/',(req,res)=>{
-    res.send('connected success')
-})
+app.get('/',(req,res)=>{res.send('connected')})
 
-app.post('/signin',(req,res)=>{  
-    db.select()
-    .from('login')
-    .where({
-        'email':req.body.email
-    })
-    .then(userSlected =>{
-        if(bcrypt.compareSync(req.body.password, userSlected[0].hash)){
-            return userSlected[0].email
-        } else {
-            res.json.status(404).json('not found');
-        }       
-    })
-    .then(emailSlected => {
-        db.select()
-        .from('users')
-        .where({email: emailSlected})
-        .then(currentUser => {
-            res.json(currentUser);
-        })
-    })
-    .catch(err=>res.status(404).json('not found'))    
-}) 
+app.post('/signin',signin.handleSignIn(bcrypt,db));
+//handleSignIn是一個currying，bcrypt和db傳入後，會回傳一個function，這個function是只有兩個引數。
+//app.post('/signin',(req,res)=>{signin.handleSignIn(req,res,bcrypt,db)});
 
+app.post('/register',register.handleRegister(bcrypt,db));
+//app.post('/register',(req,res)=>{register.handleRegister(req,res,bcrypt,db)});
 
-app.post('/register',(req,res)=>{
-    const isValidUser = req.body.name==='' || req.body.email==='' || req.body.password==='';
-    if(!isValidUser){
-        const hash = bcrypt.hashSync(req.body.password);
-        db.transaction(trx => {
-            trx.insert(
-                {
-                    email:req.body.email,
-                    hash: hash
-                })
-            .into('login')
-            .returning('email')
-            .then(resEmail => {
-                return trx('users').insert({name: req.body.name, email:resEmail[0], joined: new Date})
-                .returning('*')
-                .then(resUsers =>{
-                    res.json(resUsers[0]);
-                })
-                .catch(err => res.status(404).json('fail'))
-            })  
-            .then(trx.commit)
-            .catch(trx.rollback);          
-        })       
-    } else {
-        res.status(404).json('fail')
-    }
-})
+app.get('/profile/:id',profile.handleProfile(db));
+//app.get('/profile/:id',(req,res)=>{profile.handleProfile(req,res,db)});
 
-app.get('/profile/:id',(req,res)=>{   
-    db.select()
-    .from('users')
-    .where({id:req.params.id})
-    .then(currentUser => {
-        res.json(currentUser);
-    })
-    .catch(err=>res.status(404).json('not found'))    
-})
+app.put('/image',image.handleImage(db));
+//app.put('/image',(req,res)=>{image.handleImage(req,res,db)});
 
-app.put('/image',(req,res)=>{
-    db('users')
-    .where('email',req.body.email)
-    .increment('entries',1)
-    .returning('*')
-    .then(userUpdated=>{
-        res.json(userUpdated);
-    })
-    .catch(err=>{
-        res.status(400).send('not found');
-    })      
+app.post('/clarifai',(req,res)=>{
+    apiClarifai.models.predict("e466caa0619f444ab97497640cefc4dc",req.body.URL)
+    //連接名人辨識模組api
+    //前面的長碼是名人辨識的模組代碼，URL是要辨識的網路圖片來源的網址
+    .then(response => {
+        res.json(response)})
+    .catch(err=>{res.json('fetch failed')})
 })
 
 app.listen(3000);
