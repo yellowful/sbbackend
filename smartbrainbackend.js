@@ -47,4 +47,6 @@ app.put('/image',image.handleImage(db));
 
 app.post('/imageurl',imageurl.handleImageUrl(apiClarifai));
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000,()=>{
+    console.log(`sbbackend is running on port ${process.env.PORT}`)
+});
