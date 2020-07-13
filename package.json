@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "smartbrainbackend.js",
   "scripts": {
-    "start": "nodemon"
+    "start": "node smartbrainbackend.js",
+    "start:dev": "nodemon smartbrainbackend.js"
   },
   "keywords": [],
   "author": "",

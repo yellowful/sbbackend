@@ -5,7 +5,9 @@ const register = require('./controllers/register')
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
+const imageurl = require('./controllers/imageurl');
 const Clarifai = require('clarifai');
+
 
 var db = require('knex')({
     client: 'pg',
@@ -22,6 +24,7 @@ apiKey: 'a40220c771334acaafb67dd020f7f9d0'
 });
 
 const app = express();
+
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
@@ -42,13 +45,6 @@ app.get('/profile/:id',profile.handleProfile(db));
 app.put('/image',image.handleImage(db));
 //app.put('/image',(req,res)=>{image.handleImage(req,res,db)});
 
-app.post('/clarifai',(req,res)=>{
-    apiClarifai.models.predict("e466caa0619f444ab97497640cefc4dc",req.body.URL)
-    //連接名人辨識模組api
-    //前面的長碼是名人辨識的模組代碼，URL是要辨識的網路圖片來源的網址
-    .then(response => {
-        res.json(response)})
-    .catch(err=>{res.json('fetch failed')})
-})
+app.post('/imageurl',imageurl.handleImageUrl(apiClarifai));
 
 app.listen(3000);
