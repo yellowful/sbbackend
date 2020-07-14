@@ -12,8 +12,8 @@ const Clarifai = require('clarifai');
 var db = require('knex')({
     client: 'pg',
     connection: {
-      host : process.env.DATABASE_URL,
-      ssl: {rejectUnauthorized: false}
+        connectionString: process.env.DATABASE_URL,
+        ssl: {rejectUnauthorized: false}
     }
   });
 
