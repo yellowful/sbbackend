@@ -12,8 +12,8 @@ const Clarifai = require('clarifai');
 var db = require('knex')({
     client: 'pg',
     connection: {
-      host : '127.0.0.1',
-      user : 'RichardHuang',
+      host : process.env.DATABASE_URL,
+      user : 'epxewlvxoqsjsa',
       password : '',
       database : 'smartbrain_db'
     }
