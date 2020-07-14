@@ -18,7 +18,7 @@ var db = require('knex')({
   });
 
 const apiClarifai = new Clarifai.App({
-apiKey: 'a40220c771334acaafb67dd020f7f9d0'
+apiKey: process.env.clarifaiApiKey
 });
 
 const app = express();
