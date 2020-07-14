@@ -13,9 +13,7 @@ var db = require('knex')({
     client: 'pg',
     connection: {
       host : process.env.DATABASE_URL,
-      user : 'epxewlvxoqsjsa',
-      password : '',
-      database : 'smartbrain_db'
+      ssl: {rejectUnauthorized: false}
     }
   });
 
