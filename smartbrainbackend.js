@@ -12,6 +12,7 @@ const multer  = require('multer');
 //用來把route來的檔案改檔名存在express的靜態網站上
 const path = require('path');
 //用來取得副檔名
+const fs = require('fs');
 
 
 var db = require('knex')({
@@ -85,7 +86,7 @@ app.get('/profile/:id',profile.handleProfile(db));
 app.put('/image',image.handleImage(db));
 //app.put('/image',(req,res)=>{image.handleImage(req,res,db)});
 
-app.post('/imageurl',imageurl.handleImageUrl(apiClarifai));
+app.post('/imageurl',imageurl.handleImageUrl(apiClarifai,fs));
 
 app.post('/upload',imageupload.handleImageUpload(upload));
 
