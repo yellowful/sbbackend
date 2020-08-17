@@ -21,7 +21,17 @@ var db = require('knex')({
         connectionString: process.env.DATABASE_URL,
         ssl: {rejectUnauthorized: false}
     }
-  });
+  });//for heroku
+
+    // var db = require('knex')({
+    //     client: 'pg',
+    //     connection: {
+    //     host : '127.0.0.1',
+    //     user : 'RichardHuang',
+    //     password : '',
+    //     database : 'smartbrain_db'
+    //     }
+    // });//only for development
 
 const apiClarifai = new Clarifai.App({
 apiKey: process.env.clarifaiApiKey
