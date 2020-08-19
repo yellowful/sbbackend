@@ -2,13 +2,13 @@ const handleImageUpload = (upload) => (req,res) => {
     upload(req, res, (err) => {
         if (err) {
           // An unknown error occurred when uploading.
-          res.status(403).json('unknown error');
+          res.status(500).json('upload unknown error');
         } else if (!req.file){
-            res.status(403).json('type error');           
+        //如果檔案類型不符，告訴前端
+            res.status(403).json('image type error');           
         } else {
-            //res.json(`http://localhost:3001/${req.file.filename}`);
             res.json(req.file.filename);
-            //process.env.BACKEND_URL
+            //回傳檔名就好，讓前端自己去算url
         }     
         // Everything went fine.
       })
