@@ -23,14 +23,15 @@ const handleRegister = (bcrypt, db) => (req,res) => {
                     res.json(resUsers[0]);
                     //把資料庫回傳這個person的所有資料傳給前端
                 })
-                .catch(err => res.status(403).json('database error'))
+                .catch(err => {res.status(403).json('database error')})
                 //資料庫錯誤時，通知前端
             })  
             .then(trx.commit)
             //如果沒問題的話就結束transaction
             .catch(trx.rollback);
             //如果有問題，就退回，資料庫就會連第一個transaction的資料也刪掉
-        })       
+        })
+        .catch(err => {res.status(403).json('database error')})     
     } else {
         res.status(403).json('empty now allowed')
         //如果收到空白就向前端報錯
