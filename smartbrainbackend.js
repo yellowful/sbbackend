@@ -3,7 +3,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt-nodejs');
 const register = require('./controllers/register')
 const signin = require('./controllers/signin');
-const profile = require('./controllers/profile');
+//const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 const imageurl = require('./controllers/imageurl');
 const imageupload = require('./controllers/imageupload');
@@ -33,9 +33,6 @@ var db = require('knex')({
     //     }
     // });//only for development
 
-const apiClarifai = new Clarifai.App({
-apiKey: process.env.clarifaiApiKey
-});
 
 const app = express();
 
@@ -99,7 +96,7 @@ app.post('/register',register.handleRegister(bcrypt,db));
 app.put('/image',image.handleImage(db));
 //app.put('/image',(req,res)=>{image.handleImage(req,res,db)});
 
-app.post('/imageurl',imageurl.handleImageUrl(apiClarifai,fs));
+app.post('/imageurl',imageurl.handleImageUrl(Clarifai,fs));
 
 app.post('/upload',imageupload.handleImageUpload(upload));
 
