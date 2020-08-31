@@ -13,7 +13,10 @@ const handleImageUrl = (Clarifai,fs)=>(req,res)=>{
         if(req.body.backendFileName){
             fs.unlink(
                 `./upload/${req.body.backendFileName}`,
-                err=>{console.log('delete file error')}
+                err=>{
+                    res.status(500).json('delete backend file error');
+                    console.log(err);
+                }
             )
         }
         //如果clarifai有回傳了，不管回傳什麼，都把後端對應的圖片刪除
