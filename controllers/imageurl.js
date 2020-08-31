@@ -14,8 +14,7 @@ const handleImageUrl = (Clarifai,fs)=>(req,res)=>{
             fs.unlink(
                 `./upload/${req.body.backendFileName}`,
                 err=>{
-                    res.status(500).json('delete backend file error');
-                    console.log(err);
+                    console.log('delete file error',err);
                 }
             )
         }
