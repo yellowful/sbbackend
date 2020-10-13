@@ -5,11 +5,13 @@ const handleImageUrl = (Clarifai,fs)=>(req,res)=>{
     const apiClarifai = new Clarifai.App({
         apiKey: process.env.clarifaiApiKey
     });
+    console.log('locale',req.body.locale);
     apiClarifai.models.predict("e466caa0619f444ab97497640cefc4dc",req.body.clarifaiImageURL,{language:req.body.locale})
     //連接名人辨識模組api
     //前面的長碼是名人辨識的模組代碼，clarifaiImageURL是要辨識的網路圖片來源的網址
     //backendFileName是前端傳過來，後端圖片檔案名稱
     .then(response => {
+        console.log('response',response);
         if(req.body.backendFileName){
             fs.unlink(
                 `./upload/${req.body.backendFileName}`,
