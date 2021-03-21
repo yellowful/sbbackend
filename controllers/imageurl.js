@@ -1,6 +1,4 @@
 
-
-
 const handleImageUrl = (Clarifai,fs)=>(req,res)=>{
     const apiClarifai = new Clarifai.App({
         apiKey: process.env.clarifaiApiKey
@@ -12,14 +10,14 @@ const handleImageUrl = (Clarifai,fs)=>(req,res)=>{
     .then(response => {
         if(req.body.backendFileName){
             fs.unlink(
-                `./upload/${req.body.backendFileName}`,
+                `./public/${req.body.backendFileName}`,
                 err=>{
                     console.log('delete file error',err);
                 }
             )
         }
-        //如果clarifai有回傳了，不管回傳什麼，都把後端對應的圖片刪除
-        //把clarifai的結果傳給前端
+        // 如果clarifai有回傳了，不管回傳什麼，都把後端對應的圖片刪除
+        // 把clarifai的結果傳給前端
         res.json(response)
     })
     .catch(err=>{res.status(500).json('fetch api failed')})

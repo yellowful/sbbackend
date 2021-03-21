@@ -4,7 +4,7 @@ const handleImageUpload = (multer,path) => (req,res) => {
         destination:'./public',
         filename:(req,file,cb)=>{
             cb(null,
-                file.fieldname + '-' + Date.now() + path.extname(file.originalname)
+                file.fieldname + '-' + Date.now().toString() + path.extname(file.originalname)
             )
         //'./public'是絕對位置的寫法，可以改成'public/'相對位置的寫法
         //原則上設定的parameter都是req,file,cb，由cb來決定值是什麼
@@ -27,7 +27,6 @@ const handleImageUpload = (multer,path) => (req,res) => {
         }
     }//過濾檔案類型，必須放在upload之前
     
-    
     const upload = multer({
         storage:storage,
         limits:{fileSize:10000000},
@@ -40,6 +39,7 @@ const handleImageUpload = (multer,path) => (req,res) => {
         if (err) {
           // An unknown error occurred when uploading.
           res.status(500).json('upload unknown error');
+          console.log(err);
         } else if (!req.file){
         //如果檔案類型不符，告訴前端
             res.status(403).json('image type error');           
@@ -55,3 +55,4 @@ const handleImageUpload = (multer,path) => (req,res) => {
 module.exports={
     handleImageUpload:handleImageUpload
 }
+

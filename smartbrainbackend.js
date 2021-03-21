@@ -7,13 +7,14 @@ const signin = require('./controllers/signin');
 const image = require('./controllers/image');
 const imageurl = require('./controllers/imageurl');
 const imageupload = require('./controllers/imageupload');
+const imagecapture = require('./controllers/imagecapture');
 const Clarifai = require('clarifai');
 const multer  = require('multer');
 //用來把route來的檔案改檔名存在express的靜態網站上
+const captureWebsite = require('capture-website');
 const path = require('path');
 //用來取得副檔名
 const fs = require('fs');
-
 
 var db = require('knex')({
     client: 'pg',
@@ -63,6 +64,8 @@ app.put('/image',image.handleImage(db));
 app.post('/imageurl',imageurl.handleImageUrl(Clarifai,fs));
 
 app.post('/upload',imageupload.handleImageUpload(multer,path));
+
+app.post('/capture',imagecapture.handleImageCapture(captureWebsite));
 
 app.listen(process.env.PORT || 3000, ()=>{
     console.log(`sbbackend is running on port ${process.env.PORT}`)
