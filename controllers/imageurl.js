@@ -9,6 +9,7 @@ const handleImageUrl = (Clarifai,fs)=>(req,res)=>{
     //backendFileName是前端傳過來，後端圖片檔案名稱
     .then(response => {
         if(req.body.backendFileName){
+            console.log('filename from front-end',req.body.backendFileName)
             fs.unlink(
                 `./public/${req.body.backendFileName}`,
                 err=>{
