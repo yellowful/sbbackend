@@ -3,7 +3,6 @@ const handleImageCapture = (captureWebsite) => (req, res) => {
     const { captureUrl } = req.body;
     const captureFilename = process.pid.toString() + "-" + Date.now().toString() + ".png";
     const fullFilename = "public/"+captureFilename;
-    console.log('capture filename',fullFilename);
     (async () => {
         try {
             await captureWebsite.file(captureUrl, fullFilename,{
@@ -18,7 +17,6 @@ const handleImageCapture = (captureWebsite) => (req, res) => {
         }
         catch (err) {
             res.status(403).json('none image capture error')
-            console.log('capture err message',err);
         }
     })();
 }
