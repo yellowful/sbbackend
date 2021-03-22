@@ -3,7 +3,7 @@ const handleImageCapture = (captureWebsite) => (req, res) => {
     const { captureUrl } = req.body;
     const captureFilename = process.pid.toString() + "-" + Date.now().toString() + ".png";
     const fullFilename = "public/"+captureFilename;
-    console.log('capture filename',fullFilename)
+    console.log('capture filename',fullFilename);
     (async () => {
         try {
             await captureWebsite.file(captureUrl, fullFilename);
