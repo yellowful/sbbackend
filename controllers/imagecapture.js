@@ -6,11 +6,12 @@ const handleImageCapture = (captureWebsite) => (req, res) => {
     (async () => {
         try {
             await captureWebsite.file(captureUrl, fullFilename);
+            console.log('capture filename',fullFilename)
             await res.status(200).json(captureFilename);
         }
         catch (err) {
             res.status(403).json('none image capture error')
-            console.log('capture',err);
+            console.log('capture err message',err);
         }
     })();
 }
