@@ -10,6 +10,7 @@ const handleImageCapture = (captureWebsite) => (req, res) => {
         }
         catch (err) {
             res.status(403).json('none image capture error')
+            console.log('capture',err);
         }
     })();
 }
