@@ -6,7 +6,14 @@ const handleImageCapture = (captureWebsite) => (req, res) => {
     console.log('capture filename',fullFilename);
     (async () => {
         try {
-            await captureWebsite.file(captureUrl, fullFilename);
+            await captureWebsite.file(captureUrl, fullFilename,{
+                launchOptions: {
+                    args: [
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox'
+                    ]
+                }
+            });
             await res.status(200).json(captureFilename);
         }
         catch (err) {
