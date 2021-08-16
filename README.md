@@ -41,7 +41,7 @@ Create two tables via [PostgreSQL](https://www.postgresql.org/):
 users table：
 
 ```sql
-CREATE TABLE login (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100),
     entries BIGINT DEFAULT 0,
