@@ -1,13 +1,15 @@
-
+// 已經沒有用這個endpoint了
+// 由前端得到id，然後由id向後端取得使用者資料，然後把使用者資料傳到前端去
 const handleProfile = (db)=>(req,res)=>{   
+    // 用knex做SELECT * FROM users
     db.select()
     .from('users')
+    // WHERE id=req.params.id;
     .where({id:req.params.id})
+    // 收到的資料回傳前端
     .then(currentUser => {
         res.json(currentUser);
     })
-    //這邊其實沒什麼用處，或許可以弄個管理後端的介面可以使用
-    //由前端得到id，然後由id向後端取得使用者資料，然後把使用者資料傳到前端去
     .catch(err=>res.status(403).json('user not found'))    
 }
 
