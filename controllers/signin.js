@@ -26,8 +26,8 @@ const handleSignIn =(bcrypt,db)=>(req,res,)=>{
         db.select()
         .from('users')
         .where({email: emailSlected})
-        .then(currentUser => {
-            res.json(currentUser);
+        .then(resUsers => {
+            res.json(resUsers[0]);
         })
     })
     // 出錯就丟403的status給前端
