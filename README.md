@@ -29,7 +29,7 @@ Sign up Clarifai for free to get an API key in advance.
 When you develop in your local environment, you could try variable command such as:
 
 ```shell
-clarifaiApiKey=xxxxxxxxxxxxx node smartbrainbackend.js
+CLARIFAIAPIKEY=xxxxxxxxxxxxx node smartbrainbackend.js
 ```
 
 When you deploy to your back end cloud platform such as Heroku, set the config variables `clarifaiApiKey`.

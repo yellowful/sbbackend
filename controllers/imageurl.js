@@ -2,7 +2,7 @@
 const handleImageUrl = (Clarifai,fs)=>(req,res)=>{
     // 呼叫clarifai的api
     const apiClarifai = new Clarifai.App({
-        apiKey: process.env.clarifaiApiKey
+        apiKey: process.env.CLARIFAIAPIKEY
     });
     // 連接名人辨識模組api
     // 前面的長碼是名人辨識的模組代碼，clarifaiImageURL是要辨識的網路圖片來源的網址
